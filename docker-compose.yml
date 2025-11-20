@@ -11,11 +11,11 @@ services:
       
       # Usuario administrador
       MYSQL_USER: admlinux
-      MYSQL_PASSWORD: blabla
+      MYSQL_PASSWORD: admin
       
       # Usuario de solo lectura
       MYSQL_READONLY_USER: usuario_lectura
-      MYSQL_READONLY_PASSWORD: bla
+      MYSQL_READONLY_PASSWORD: user
       
     ports:
       - "3306:3306"
@@ -24,6 +24,22 @@ services:
       - ./scripts:/docker-entrypoint-initdb.d
     networks:
       - mysql-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-admlinux
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql-db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+      UPLOAD_LIMIT: 128M
+    ports:
+      - "8080:80"
+    networks:
+      - mysql-network
+    depends_on:
+      - mysql-db
 
 networks:
   mysql-network:

@@ -1,8 +1,17 @@
--- Crear base de datos personalizada
+-- Crear usuarios con permisos
+CREATE USER IF NOT EXISTS 'admlinux'@'%' IDENTIFIED BY 'blabla';
+GRANT ALL PRIVILEGES ON *.* TO 'admlinux'@'%' WITH GRANT OPTION;
+
+CREATE USER IF NOT EXISTS 'usuario_lectura'@'%' IDENTIFIED BY 'blabla';
+GRANT SELECT ON sistema_facultad.* TO 'usuario_lectura'@'%';
+GRANT SELECT ON information_schema.* TO 'usuario_lectura'@'%';
+
+FLUSH PRIVILEGES;
+
+-- Crear y usar la base de datos de la facultad
 CREATE DATABASE IF NOT EXISTS sistema_facultad;
- 
 USE sistema_facultad;
- 
+
 -- Tabla de estudiantes
 CREATE TABLE IF NOT EXISTS estudiantes (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,7 +21,7 @@ CREATE TABLE IF NOT EXISTS estudiantes (
     email VARCHAR(150) UNIQUE NOT NULL,
     fecha_inscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
- 
+
 -- Tabla de materias
 CREATE TABLE IF NOT EXISTS materias (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,18 +29,14 @@ CREATE TABLE IF NOT EXISTS materias (
     codigo VARCHAR(10) UNIQUE NOT NULL,
     creditos INT DEFAULT 0
 );
- 
--- Insertar algunos datos de ejemplo
+
+-- Insertar datos de ejemplo
 INSERT IGNORE INTO estudiantes (nombre, apellido, legajo, email) VALUES
 ('Juan', 'Pérez', 'LP12345', 'juan.perez@facultad.edu'),
-('María', 'Gómez', 'LP12346', 'maria.gomez@facultad.edu'),
+('Iara', 'Gómez', 'LP12346', 'maria.gomez@facultad.edu'),
 ('Carlos', 'López', 'LP12347', 'carlos.lopez@facultad.edu');
- 
+
 INSERT IGNORE INTO materias (nombre, codigo, creditos) VALUES
 ('Linux y Virtualización', 'LINUX01', 4),
 ('Bases de Datos', 'BDAT02', 6),
-('Docker y Contenedores', 'DOCK03', 4);
- 
--- Otorgar todos los privilegios al usuario admlinux
-GRANT ALL PRIVILEGES ON *.* TO 'admlinux'@'%';
-FLUSH PRIVILEGES;
+('CALCULO III', 'DOCK03', 4);

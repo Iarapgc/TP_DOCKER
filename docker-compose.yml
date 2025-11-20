@@ -11,11 +11,11 @@ services:
       
       # Usuario administrador
       MYSQL_USER: admlinux
-      MYSQL_PASSWORD: blabla
+      MYSQL_PASSWORD: admin
       
       # Usuario de solo lectura
       MYSQL_READONLY_USER: usuario_lectura
-      MYSQL_READONLY_PASSWORD: bla
+      MYSQL_READONLY_PASSWORD: user
       
     ports:
       - "3306:3306"
